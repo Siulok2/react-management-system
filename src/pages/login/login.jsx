@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd';
+import axios from 'axios'
 import logo from './img/logo.png'
 import './css/login.less'
 
@@ -22,7 +23,11 @@ class Login extends Component {
         e.preventDefault()
         this.props.form.validateFields((err,values) => {
             if(!err){
-                console.log('发送网络请求',values)
+                const {username,password} = values
+                axios.post('http://localhost:3000/login',`username=${username}&password=${password}`).then(
+                    (respones) => {console.log(respones.data)},
+                    (error) => {console.log(error)}
+                )
             }
         })
     }
