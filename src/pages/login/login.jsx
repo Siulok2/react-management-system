@@ -28,6 +28,7 @@ class Login extends Component {
                 const {status,data,msg} = result
                 if(status === 0){
                     message.success('登陆成功！')
+                    this.props.history.replace('/admin')
                 }else{
                     message.warning(msg)
                 }    
