@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button } from 'antd';
-import axios from 'axios'
+import { Form, Icon, Input, Button, message } from 'antd';
+import {reqLogin} from '../../api'
 import logo from './img/logo.png'
 import './css/login.less'
+
 
 class Login extends Component {
     passwordValidator = (rule, value, callback) => {
@@ -21,13 +22,16 @@ class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        this.props.form.validateFields((err,values) => {
-            if(!err){
-                const {username,password} = values
-                axios.post('http://localhost:3000/login',`username=${username}&password=${password}`).then(
-                    (respones) => {console.log(respones.data)},
-                    (error) => {console.log(error)}
-                )
+        this.props.form.validateFields(async(err,values) => {
+            if(!err){                
+                let result = await reqLogin(values)
+                const {status,data,msg} = result
+                if(status === 0){
+                    message.success('登陆成功！')
+                }else{
+                    message.warning(msg)
+                }    
+                
             }
         })
     }
